@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>submitted</title>
+    <style>
+    /* CSS styles for the form */
+    .form-container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 4px;
+    }
+
+    .form-group textarea {
+      height: 100px;
+    }
+
+    .form-group .btn-submit {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-group .btn-submit:hover {
+      background-color: #45a049;
+    }
+    nav {
+      background-color: #03b6a1;
+      color: #fff;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+
+
+  </style>
+</head>
+<body>
+<nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+      </nav>
+
+
+<!-- Template code for the user dashboard -->
+
+
+
+{% if user.is_authenticated %}
+    <h1 style ="color: green">Welcome, {{ user.username }}!  On this page, you have the ability to access and view assets as a Admin </h1>
+
+
+
+{% else %}
+    <p>Please <a href="{% url 'login' %}">login</a> to access the Userpage.</p>
+{% endif %}
+
+</body>
+</html>

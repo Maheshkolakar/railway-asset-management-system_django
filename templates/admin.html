@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <style>
+        .form-container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group input[type="file"] {
+      padding: 4px;
+    }
+
+    .form-group textarea {
+      height: 100px;
+    }
+
+    .form-group .btn-submit {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-group .btn-submit:hover {
+      background-color: #45a049;
+    }
+    nav {
+      background-color: #03b6a1;
+      color: #fff;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</nav>
+
+{% if user.is_authenticated %}
+    <h1 style="color: green">Welcome, {{ user.username }}! On this page, you have the ability to access and view assets as an Admin</h1>
+
+    <h1>Enquiry Records</h1>
+    <table id="enquiryTable">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+            <th>Image</th>
+            <th>ecSocket</th>
+            <th>boxCondition</th>
+            <th>loopResistance</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // JavaScript code for AJAX request
+        function fetchData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '{% url "enquiry_data" %}', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    displayData(data);
+                }
+            };
+            xhr.send();
+        }
+
+        function displayData(data) {
+            var tableBody = document.querySelector('#enquiryTable tbody');
+            tableBody.innerHTML = ''; // Clear existing table body
+
+            data.forEach(function (enquiry) {
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${enquiry.name}</td>
+                    <td>${enquiry.mobile}</td>
+                    <td>${enquiry.longitude}</td>
+                    <td>${enquiry.latitude}</td>
+                    <td><img src="${enquiry.image_url}" alt="${enquiry.name}" height="80"></td>
+                    <td>${enquiry.ecSocket}</td>
+                    <td>${enquiry.boxCondition}</td>
+                    <td>${enquiry.loopResistance}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fetch data when the page loads
+        fetchData();
+    </script>
+
+{% else %}
+    <p>Please <a href="{% url 'login' %}">login</a> to access the admin page.</p>
+{% endif %}
+
+</body>
+</html>
